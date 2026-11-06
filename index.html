@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clear Speech – Free Speech Evaluation for 6–15 Minute Speeches</title>
+<meta name="description" content="Upload audio, video or text, or record live. Get free scores on the eight Toastmasters contest criteria, coaching drills, badges and a shareable score card. Private: runs in your browser.">
+<meta property="og:title" content="Clear Speech – Free Speech Evaluation">
+<meta property="og:description" content="Upload a speech (audio, video or text) and get instant, private feedback on eight contest criteria.">
+<meta property="og:type" content="website">
+<style>
+:root{--bg:#fff;--fg:#111827;--mut:#6b7280;--card:#f8f9fc;--bd:#e5e7eb;--pri:#4f46e5;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1220;--fg:#f3f4f6;--mut:#9ca3af;--card:#181c30;--bd:#2a2f4a;--pri:#818cf8}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+.w{max-width:980px;margin:auto;padding:0 20px}
+header{border-bottom:1px solid var(--bd)}header .w{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font-weight:800;font-size:20px}.logo b{color:var(--pri)}
+nav a{color:var(--mut);text-decoration:none;margin-left:20px;font-weight:500}nav a:hover{color:var(--fg)}
+.hero{text-align:center;padding:48px 0 24px}.eyebrow{color:var(--pri);font-weight:700;letter-spacing:.1em;font-size:13px}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.1;margin:8px 0}h2{font-size:26px;margin:0 0 8px}h3{margin:0 0 8px}
+.tag{color:var(--pri);font-weight:600;font-size:20px}.mut{color:var(--mut)}.note{font-size:13px;color:var(--mut)}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}.pills span{border:1px solid var(--bd);background:var(--card);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600}
+section{padding:28px 0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:22px}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:130px;padding:12px;border:1px solid var(--bd);background:transparent;color:var(--fg);border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input[type=text],input[type=number],textarea,select{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit}
+textarea{min-height:200px;resize:vertical}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.btn{display:inline-block;background:var(--pri);color:#fff;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none}
+.btn.sec{background:transparent;color:var(--fg);border:1px solid var(--bd)}.btn:disabled{opacity:.5}
+.chips button{border:1px solid var(--bd);background:var(--bg);color:var(--fg);border-radius:99px;padding:4px 12px;margin:2px;cursor:pointer;font:inherit;font-size:13px}
+.drop{border:2px dashed var(--bd);border-radius:14px;padding:28px;text-align:center;cursor:pointer}.drop:hover,.drop.ov{border-color:var(--pri)}
+.rec{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.timer{font:700 28px ui-monospace,monospace}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--bad);display:none;animation:p 1s infinite}.recording .dot{display:inline-block}
+@keyframes p{50%{opacity:.2}}
+#live{min-height:80px;margin-top:12px;padding:12px;border:1px dashed var(--bd);border-radius:10px;color:var(--mut)}
+#res,#busy{display:none}
+.prog{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0}.prog i{display:block;height:100%;width:0;background:var(--pri);transition:width .3s}
+.top{display:grid;grid-template-columns:180px 1fr;gap:24px;align-items:center}
+@media(max-width:640px){.top{grid-template-columns:1fr;text-align:center}nav{display:none}}
+.ring{width:160px;height:160px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(var(--pri) calc(var(--p)*1%),var(--bd) 0)}
+.ring div{width:124px;height:124px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:38px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.stat{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:21px}.stat span{font-size:12px;color:var(--mut)}
+.crit{margin:14px 0}.crit .h{display:flex;justify-content:space-between;font-weight:600}
+.bar{height:10px;border-radius:6px;background:var(--bd);overflow:hidden;margin:4px 0}.bar i{display:block;height:100%;border-radius:6px}
+.crit p{margin:2px 0;font-size:14px;color:var(--mut)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+ul,ol{padding-left:20px}li{margin:6px 0}
+mark{background:#fde68a;color:#111;border-radius:3px;padding:0 2px}mark.h{background:#fca5a5}
+#tx{max-height:300px;overflow:auto;white-space:pre-wrap;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:8px}.badges span{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:6px 12px;font-size:14px;font-weight:600}
+.hist{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:26px}.hist div{flex:1;background:var(--pri);border-radius:6px 6px 0 0;position:relative;min-width:18px}.hist small{position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:11px}
+.profile{border:1px solid var(--pri);background:linear-gradient(135deg,rgba(79,70,229,.10),transparent)}
+.open{display:inline-block;background:#dcfce7;color:#166534;border-radius:99px;padding:2px 12px;font-size:13px;font-weight:700}
+.profile h3{font-size:22px;margin:8px 0 4px}.profile .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn.wa{background:#16a34a}
+details{border-bottom:1px solid var(--bd);padding:12px 0}summary{font-weight:600;cursor:pointer}
+footer{border-top:1px solid var(--bd);padding:28px 0;color:var(--mut);font-size:14px;margin-top:20px}
+@media print{header,#input,#faq,#how,footer,.noprint{display:none!important}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<header><div class="w"><div class="logo">Clear<b>Speech</b></div><nav><a href="#input">Evaluate</a><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="#about">About</a></nav></div></header>
+
+<main class="w">
+<div class="hero">
+<div class="eyebrow">FREE · PRIVATE · NO SIGN-UP</div>
+<h1>Evidence-based speech feedback</h1>
+<div class="tag">Beyond feedback. Towards impact.</div>
+<p class="mut" style="max-width:680px;margin:12px auto">Upload an audio, video or text file, record live, or paste a transcript. Get scores on the eight Toastmasters contest criteria, a coaching plan, badges and a shareable score card. Built for speeches of 6–15 minutes.</p>
+<div class="pills"><span>🎧 Audio</span><span>🎬 Video</span><span>📄 Text / SRT</span><span>🎙 Live record</span><span>🔒 Stays in your browser</span><span>💸 100% free</span></div>
+</div>
+
+<section id="input"><div class="card">
+<div class="tabs"><button id="t1" class="on">📁 Upload audio / video / text</button><button id="t2">🎙 Record live</button><button id="t3">📝 Paste transcript</button></div>
+<div class="row">
+<div><label>Speech title</label><input type="text" id="title" placeholder="e.g. Ice Breaker"></div>
+<div><label>Target length (minutes)</label><input type="number" id="target" value="7" min="1" max="20" step="0.5"><div class="chips"><button data-m="6">6</button><button data-m="7">7</button><button data-m="10">10</button><button data-m="12">12</button><button data-m="15">15</button></div></div>
+<div><label>Speech type</label><select id="type"><option>Prepared speech</option><option>Contest speech</option><option>Keynote / conference</option><option>Business presentation</option></select></div>
+</div>
+
+<div id="p1"><label>Choose a file</label>
+<div class="drop" id="drop"><b>Drop a file here or click to browse</b><br><span class="note">MP3, WAV, M4A, MP4, MOV, WEBM, TXT, SRT, VTT · up to ~200 MB · audio/video is transcribed in your browser</span><input type="file" id="file" hidden accept="audio/*,video/*,.txt,.srt,.vtt,.md"></div>
+<p class="note" id="fn"></p></div>
+
+<div id="p2" style="display:none"><div class="rec" style="margin-top:14px"><button class="btn" id="rb">Start recording</button><span class="dot"></span><span class="timer" id="tm">00:00</span></div>
+<div id="live">Your live transcript will appear here. Works best in Chrome, Edge or Safari. Keep the tab open while speaking.</div><p class="note" id="sup"></p></div>
+
+<div id="p3" style="display:none"><label>Transcript</label><textarea id="pt" placeholder="Paste at least 100 words. YouTube auto-captions, Otter, Whisper and Word dictation all work."></textarea>
+<label>Actual speaking time (mm:ss) – optional</label><input type="text" id="pd" placeholder="e.g. 9:45" style="max-width:160px"><div style="margin-top:8px"><button class="btn sec" id="demo">Try a sample speech</button></div></div>
+
+<h3 style="margin:20px 0 0">Self-assessment <span class="note">(text can’t see you, so rate what you know)</span></h3>
+<div class="row">
+<div><label>Physical delivery: gestures, eye contact, stage use: <b id="v1">6</b>/10</label><input type="range" id="s1" min="1" max="10" value="6" style="width:100%"></div>
+<div><label>Manner: energy, confidence, connection: <b id="v2">6</b>/10</label><input type="range" id="s2" min="1" max="10" value="6" style="width:100%"></div>
+</div>
+<div style="margin-top:18px"><button class="btn" id="go">Evaluate my speech</button></div>
+<div id="busy"><p id="bt" style="margin-bottom:0">Working…</p><div class="prog"><i id="bp"></i></div><p class="note">First use downloads a small speech model (~40 MB) once, then it’s cached. A 15-minute speech can take a few minutes. Keep this tab open.</p></div>
+</div></section>
+
+<section id="res">
+<div class="card"><div class="top"><div class="ring" id="ring"><div id="ov">0</div></div><div><h2 id="rt"></h2><p id="rs" class="mut"></p><div class="stats" id="st"></div></div></div></div>
+<h2 style="margin-top:28px">Benchmark scores</h2><div class="card" id="cr"></div>
+<div class="grid2" style="margin-top:16px"><div class="card"><h3>✅ Strengths</h3><ul id="sg"></ul></div><div class="card"><h3>🎯 Opportunities</h3><ul id="op"></ul></div></div>
+<div class="card" style="margin-top:16px"><h3>🏅 Badges earned</h3><div class="badges" id="bd"></div></div>
+<div class="card" style="margin-top:16px"><h3>🚀 Prioritised next steps</h3><ol id="ns"></ol></div>
+<div class="card" style="margin-top:16px"><h3>🗣 Personalised coaching script</h3><div id="cs"></div></div>
+<div class="card" style="margin-top:16px"><h3>Transcript review <span class="note"><mark class="h">filler</mark> <mark>hedge</mark></span></h3><div id="tx"></div></div>
+<div class="card" style="margin-top:16px"><h3>📈 Your progress</h3><p id="dl" class="mut"></p><div class="hist" id="hs"></div><p class="note">Saved on this device only.</p><button class="btn sec noprint" id="clr">Clear history</button></div>
+<div class="card noprint" style="margin-top:16px"><h3>📣 Share your result</h3><p class="mut">Download a score card and post it with your next goal.</p>
+<button class="btn" id="dlc">Download score card</button> <a class="btn sec" id="li" target="_blank" rel="noopener">Share on LinkedIn</a> <a class="btn sec" id="wa" target="_blank" rel="noopener">Share on WhatsApp</a> <button class="btn sec" onclick="print()">Save as PDF</button></div>
+<div class="card profile" id="rp" style="margin-top:16px"></div>
+</section>
+
+<section id="how"><h2>How it works</h2>
+<div class="grid2">
+<div class="card"><b>1. Add your speech</b><p class="mut">Upload audio, video or text, record live, or paste a transcript.</p></div>
+<div class="card"><b>2. Instant analysis</b><p class="mut">Pace, pauses, fillers, hedging, structure, storytelling, vocabulary and timing are measured.</p></div>
+<div class="card"><b>3. Improve</b><p class="mut">Scores on eight contest criteria, prioritised steps, drills, badges and progress tracking.</p></div>
+</div>
+<p class="note">Great for Toastmasters speeches, contest preparation, keynotes, business presentations, conference talks and leadership communication.</p></section>
+
+<section id="faq"><h2>FAQ</h2>
+<details><summary>Is it really free and private?</summary><p class="mut">Yes. Files are processed in your browser and never uploaded to a server. History is stored in your browser only. Live recording uses your browser’s built-in speech recognition, which some browsers send to their vendor’s speech service.</p></details>
+<details><summary>Is this live coaching or an AI model?</summary><p class="mut">Audio and video are transcribed by an open-source AI speech model (Whisper) running locally. Scoring uses transparent rule-based metrics, not a human coach. Use it alongside human evaluators.</p></details>
+<details><summary>My video is very large. What should I do?</summary><p class="mut">Extract the audio (MP3/M4A) first, or paste the YouTube auto-generated transcript with your speaking time.</p></details>
+<details><summary>Why are delivery and manner self-rated?</summary><p class="mut">Gestures and eye contact can’t be heard in audio, so you rate them honestly. Manner blends your rating with confidence language.</p></details></section>
+
+<section id="about"><div class="card profile" id="prof">
+<span class="open">● Open to work · London, UK</span>
+<h3>Venkateswara Rao Banday</h3>
+<p>Multi-sector Program and Operations Leader with the right to work in the UK and India, looking for roles in London. I build apps with AI and share them freely to share knowledge and useful information.</p>
+<p class="mut">This app is free to use. If it helped you, you can help me: a referral, an introduction or a lead on a role in London would mean a lot.</p>
+<div class="btns"><a class="btn" href="https://www.linkedin.com/in/venkateswararao-banday" target="_blank" rel="noopener">Connect on LinkedIn</a>
+<a class="btn wa" href="https://wa.me/919962507575?text=Hi%20Venkateswara%2C%20I%20found%20your%20Clear%20Speech%20app%20and%20would%20like%20to%20connect." target="_blank" rel="noopener">WhatsApp +91 9962507575</a>
+<a class="btn wa" href="https://wa.me/447391522993?text=Hi%20Venkateswara%2C%20I%20found%20your%20Clear%20Speech%20app%20and%20would%20like%20to%20connect." target="_blank" rel="noopener">WhatsApp +44 7391522993</a></div>
+</div></section>
+</main>
+<footer><div class="w">© 2026 Clear Speech by Venkateswara Rao Banday. Free to use. Scores are indicative guidance, not official Toastmasters judging.</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
